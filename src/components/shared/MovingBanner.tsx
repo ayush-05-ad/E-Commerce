@@ -85,11 +85,11 @@ export function MovingBanner({ products }: MovingBannerProps) {
                   <div className="flex items-center justify-between pt-1">
                     <div className="flex items-baseline gap-2">
                       <span className="text-sm font-extrabold text-white">
-                        ${product.offerPrice.toFixed(2)}
+                        ₹{product.offerPrice.toFixed(2)}
                       </span>
                       {product.discount > 0 && (
                         <span className="text-xxs text-neutral-500 line-through">
-                          ${product.originalPrice.toFixed(2)}
+                          ₹{product.originalPrice.toFixed(2)}
                         </span>
                       )}
                     </div>

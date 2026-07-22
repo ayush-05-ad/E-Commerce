@@ -229,22 +229,26 @@ export async function verifyRazorpayPayment(
       paymentMethod: "Razorpay" as const,
     };
 
-    // Send emails
-    const customerHtml = generateCustomerEmailTemplate(mailDetails);
-    const sellerHtml = generateSellerEmailTemplate(mailDetails);
+    // Send emails (fail-safe)
+    try {
+      const customerHtml = generateCustomerEmailTemplate(mailDetails);
+      const sellerHtml = generateSellerEmailTemplate(mailDetails);
 
-    await Promise.all([
-      sendEmail({
-        to: order.user.email,
-        subject: `Order Confirmed: ${order.id.slice(0, 8)}`,
-        html: customerHtml,
-      }),
-      sendEmail({
-        to: order.store.seller.email,
-        subject: `New Store Sale: ${order.id.slice(0, 8)}`,
-        html: sellerHtml,
-      }),
-    ]);
+      await Promise.all([
+        sendEmail({
+          to: order.user.email,
+          subject: `Order Confirmed: ${order.id.slice(0, 8)}`,
+          html: customerHtml,
+        }),
+        sendEmail({
+          to: order.store.seller.email,
+          subject: `New Store Sale: ${order.id.slice(0, 8)}`,
+          html: sellerHtml,
+        }),
+      ]);
+    } catch (mailError) {
+      console.error("Nodemailer dispatch failed during checkout validation:", mailError);
+    }
 
     return { success: true, orderId: order.id };
   } catch (error) {
@@ -343,7 +347,7 @@ export async function createCODOrder(
       },
     });
 
-    // Send order confirmation emails for COD
+    // Send order confirmation emails for COD (fail-safe)
     const mailDetails = {
       orderId: order.id,
       date: new Date(order.createdAt).toLocaleDateString(),
@@ -368,21 +372,25 @@ export async function createCODOrder(
       paymentMethod: "COD" as const,
     };
 
-    const customerHtml = generateCustomerEmailTemplate(mailDetails);
-    const sellerHtml = generateSellerEmailTemplate(mailDetails);
+    try {
+      const customerHtml = generateCustomerEmailTemplate(mailDetails);
+      const sellerHtml = generateSellerEmailTemplate(mailDetails);
 
-    await Promise.all([
-      sendEmail({
-        to: order.user.email,
-        subject: `COD Order Confirmed: ${order.id.slice(0, 8)}`,
-        html: customerHtml,
-      }),
-      sendEmail({
-        to: order.store.seller.email,
-        subject: `New Store COD Order: ${order.id.slice(0, 8)}`,
-        html: sellerHtml,
-      }),
-    ]);
+      await Promise.all([
+        sendEmail({
+          to: order.user.email,
+          subject: `COD Order Confirmed: ${order.id.slice(0, 8)}`,
+          html: customerHtml,
+        }),
+        sendEmail({
+          to: order.store.seller.email,
+          subject: `New Store COD Order: ${order.id.slice(0, 8)}`,
+          html: sellerHtml,
+        }),
+      ]);
+    } catch (mailError) {
+      console.error("Nodemailer dispatch failed during COD order placement:", mailError);
+    }
 
     return { success: true, orderId: order.id };
   } catch (error) {
