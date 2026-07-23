@@ -117,7 +117,7 @@ export function Navbar() {
             </Show>
 
             {/* Cart Link */}
-            <Link href="/checkout" className="relative p-2 text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors block">
+            <Link href="/cart" className="relative p-2 text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors block">
               <ShoppingBag className="w-5 h-5" />
               {mounted && cartCount > 0 && (
                 <span className="absolute top-1 right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-600 text-[9px] font-bold text-white">

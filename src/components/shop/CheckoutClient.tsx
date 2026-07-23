@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { MapPin, CreditCard, ChevronRight, Lock, ShoppingBag, Loader2, Landmark, HelpCircle, CheckCircle2 } from "lucide-react";
 import { useCartStore } from "@/store/cart.store";
 import { createRazorpayOrder, verifyRazorpayPayment, createCODOrder } from "@/actions/checkout.actions";
@@ -500,9 +501,17 @@ export function CheckoutClient({ singleProduct, singleProductDetails }: Checkout
 
         {/* Right Column: Invoice/Order Summary (4 cols) */}
         <div className="lg:col-span-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 shadow-sm space-y-6">
-          <div className="flex items-center gap-3 border-b border-neutral-100 dark:border-neutral-800 pb-4">
-            <ShoppingBag className="w-5 h-5 text-neutral-500" />
-            <h2 className="font-extrabold text-lg text-neutral-900 dark:text-white">Order Summary</h2>
+          <div className="flex items-center justify-between border-b border-neutral-100 dark:border-neutral-800 pb-4">
+            <div className="flex items-center gap-3">
+              <ShoppingBag className="w-5 h-5 text-neutral-500" />
+              <h2 className="font-extrabold text-lg text-neutral-900 dark:text-white">Order Summary</h2>
+            </div>
+            <Link 
+              href="/cart" 
+              className="text-xs font-bold text-neutral-400 hover:text-amber-500 hover:underline transition-colors"
+            >
+              Edit Cart
+            </Link>
           </div>
 
           {/* List items in invoice */}
